@@ -2,7 +2,9 @@
 var APIKey = 'AIzaSyBOzHU6514bivAZ_UIhpRwaYXcNTTLfrqs';
 //Array to hold all the markers created by 'populateMap'
 var markers = [];
-//This is the data.  Hardcoding more data will automatically update the list of places and the markers on the map.
+//This is the data.  Hardcoding more data will automatically update the list of places and the markers on the map.  However,
+//if more places are added, additional 'else if' conditions will need to be added with index updates to correspond
+//with the index of the new entry.
 var places = [
 {
 	title: "Antonio's",
@@ -200,8 +202,19 @@ this.resetForm = function(){
 			this.clearMarkers();
 			markers[1].setMap(map);
 			this.addName(places[1]);
-			console.log('makers:'+markers);
-			console.log('3');
+		}else if(this.searchValue().toLowerCase() === places[2].title.toLowerCase()){
+			this.clearMarkers();
+			markers[2].setMap(map);
+			this.addName(places[2]);
+		}
+		else if(this.searchValue().toLowerCase() === places[3].title.toLowerCase()){
+			this.clearMarkers();
+			markers[3].setMap(map);
+			this.addName(places[3]);
+		}else if(this.searchValue().toLowerCase() === places[4].title.toLowerCase()){
+			this.clearMarkers();
+			markers[4].setMap(map);
+			this.addName(places[4]);
 		}
 		//If nothing is entered in the search or the value doesn't match anything in the list, return to the original state.
 		else{
