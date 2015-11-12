@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <script src="JS/jquery.min.js"></script>
+  	<link rel="stylesheet" href="CSS/bootstrap-grid.css" type="text/css">
+  	<link rel="stylesheet" href="CSS/style.css" type="text/css">
+
+  </head>
+  <body>
+  	<div class="container">
+  		<div class="row" id="searchRow">
+  			<div class="input-group">
+  			<form data-bind="submit: returnSearch()">
+  				<input class="form-control" placeholder="Search" data-bind="textInput: searchValue">
+  				<button type="submit" id="subBut">Submit</button>
+  				<button type="Reset" id="resBut" data-bind="click: resetForm">Reset List</button>
+  			</form>
+  			</div>
+  		</div>
+  		<div class="row" id="mapRow">
+  			<ul class="col-lg-3" id="listCol" data-bind="foreach: placesList">
+  				<li data-bind="text: title, click: $parent.animateFromList"></li>
+  			</ul>
+			<div class ="col-lg-9 pull-right" id="map" ></div>
+		</div>
+	</div>
+
+   <script src="JS/knockout-3.2.0.js"></script>
+    <script src="JS/app.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOzHU6514bivAZ_UIhpRwaYXcNTTLfrqs&callback=initMap"
+        async defer></script>
+
+
+  </body>
+</html>
+
