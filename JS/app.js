@@ -64,6 +64,7 @@ var map;
 
 //Creats and adds all markers to the map based on the data in 'places' and pushes these markers to the 'markers' array.
 var marker;
+var infoWindow;
 var populateMap = function(){
 	//markers = [''];
 		for(var i=0; i<places.length; i++){
@@ -79,18 +80,24 @@ var populateMap = function(){
 	  		currentMarker.addListener('click', function(){
 	  			if (currentMarker.getAnimation() !== null) {
     				currentMarker.setAnimation(null);
+    				infoWindow.close(map, currentMarker);
   				} else {
     				currentMarker.setAnimation(google.maps.Animation.BOUNCE);
+    				infoWindow.open(map, currentMarker);
   				}
   			});
-
+	  				 infoWindow = new google.maps.InfoWindow({
+						content: "placeHolder"
+					});
 		})(marker);
+
 		marker.setMap(map);
 		markers.push(marker);
 
 	}
 
 };
+
 
 //This function is called when the google maps script is initially run.  Sets up the map on the screen.
 var initMap = function() {
@@ -104,6 +111,9 @@ var initMap = function() {
   });
    //Call function to put markers on the map
    populateMap();
+
+
+
 
   //Resizes the map as the window size is adjusted.  Adapted from http://softwarewalker.com/2014/05/07/using-google-maps-in-a-responsive-design/
   var mapParentWidth = $('#mapRow').width();
@@ -208,11 +218,13 @@ this.resetForm = function(){
 //its associated 'placesList' object, and then toggles its animated state.  Because a click on the actual map marker also toggles
 // via a similar function, clicking either the map marker or its associated list marker will toggle the state.
 	this.animateFromList = function(data){
-			//data.addEventListener('click', function(){
+			//data.addListener('click', function(){
 	  			if (markers[data.markerIndex].getAnimation() !== null) {
     				markers[data.markerIndex].setAnimation(null);
+    				infoWindow.close(map, markers[data.markerIndex]);
   				} else {
     				markers[data.markerIndex].setAnimation(google.maps.Animation.BOUNCE);
+    				infoWindow.open(map, markers[data.markerIndex]);
   				}
   			//});
 
