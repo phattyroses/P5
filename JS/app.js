@@ -93,12 +93,12 @@ var initMap = function() {
 
   //Resizes the map as the window size is adjusted.  Adapted from http://softwarewalker.com/2014/05/07/using-google-maps-in-a-responsive-design/
   var mapParentWidth = $('#mapRow').width();
-    $('#map').width(mapParentWidth);
+    $('#map').width(mapParentWidth*.75);
     $('#map').height(3 * mapParentWidth / 4);
 }
 var resizeBootstrapMap =function () {
     var mapParentWidth = $('#mapRow').width();
-    $('#map').width(mapParentWidth);
+    $('#map').width(mapParentWidth*.75);
     $('#map').height(3 * mapParentWidth / 4);
     google.maps.event.trigger($('#map resize'));
 
@@ -229,7 +229,7 @@ this.resetForm = function(){
 	}
 	//Function called by search (when 'Submit' button is pressed)
 	//Check the returned value from the search against the values stored in the 'places' array
-	this.returnSearch = ko.observable(function(){
+	/*this.returnSearch = ko.observable(function(){
 		if (this.searchValue().toLowerCase() === places[0].title.toLowerCase()){
 			console.log(markers[0]);
 				this.clearMarkers();
@@ -260,7 +260,7 @@ this.resetForm = function(){
 	//Clear the contents of the search box after 'Submit' is clicked.
 	this.searchValue('');
 
-	});
+	});*/
 
 }
 
