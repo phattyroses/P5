@@ -39,6 +39,20 @@ var places = [
 	map: map,
 	varName: "BlackSheep",
 	markerIndex: 4
+},
+{
+	title: "Judie's Restaurant",
+	position: {lat: 42.376470, lng: -72.519666},
+	map: map,
+	varName: "Judie",
+	markerIndex: 5
+},
+{
+	title: "Panda East Chinese Restaurant",
+	position: {lat: 42.377180, lng: -72.519186},
+	map: map,
+	varName: "Panda",
+	markerIndex: 6
 }
 
 ];
@@ -229,6 +243,7 @@ this.resetForm = function(){
 	}
 	//Function called by search (when 'Submit' button is pressed)
 	//Check the returned value from the search against the values stored in the 'places' array
+	//To use, add a button for search and one for reset and wire them appropriately.
 	/*this.returnSearch = ko.observable(function(){
 		if (this.searchValue().toLowerCase() === places[0].title.toLowerCase()){
 			console.log(markers[0]);
