@@ -157,7 +157,7 @@ var ViewModel = function(){
 	this.listNamesPop = function(){
 		for (var i = 0; i<places.length; i++){
 			this.placesList().push(places[i]);
-			console.log(this.placesList().title);
+
 		}
 	};
 
@@ -183,7 +183,7 @@ this.resetForm = function(){
 			for (var i=0; i<markers.length; i++){
 				markers[i].setMap(map);
 			}
-			console.log("placesListBefore: " + this.placesList());
+
 			for (var i=0; i<places.length; i++){
 				this.placesList.push(places[i]);
 
@@ -210,7 +210,7 @@ this.resetForm = function(){
 	this.searchValue = ko.observable('');
 //This function updates as the user types into the search bar and filters the results accordingly.
 	this.filterList = function(data, event){
-		console.log("filterList");
+
 		//Contains the returned vales from 'searchIndex'
 		valuesArray = [];
 		//Iterate through all the places
@@ -244,7 +244,7 @@ this.resetForm = function(){
 	//Function called by search (when 'Submit' button is pressed)
 	//Check the returned value from the search against the values stored in the 'places' array
 	//To use, add a button for search and one for reset and wire them appropriately.
-	this.returnSearch = ko.observable(function(){
+	/*this.returnSearch = ko.observable(function(){
 		console.log("returnSearch");
 		if (this.searchValue().toLowerCase() === places[0].title.toLowerCase()){
 			console.log(markers[0]);
@@ -276,7 +276,7 @@ this.resetForm = function(){
 	//Clear the contents of the search box after 'Submit' is clicked.
 	this.searchValue('');
 
-	});
+	});*/
 
 }
 
