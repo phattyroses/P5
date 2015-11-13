@@ -111,10 +111,23 @@ var initMap = function() {
     $('#map').height(3 * mapParentWidth / 4);
 }
 var resizeBootstrapMap =function () {
+
     var mapParentWidth = $('#mapRow').width();
-    $('#map').width(mapParentWidth*.75);
-    $('#map').height(3 * mapParentWidth / 4);
-    google.maps.event.trigger($('#map resize'));
+    if (mapParentWidth <= 768){
+    	$('#map').width(mapParentWidth*.75);
+    	$('#map').height(3 * mapParentWidth / 5);
+
+    }else if (mapParentWidth <= 455){
+    	$('#map').width(mapParentWidth*.75);
+    	$('#map').height(3 * mapParentWidth / 6);
+
+    }
+    else{
+    	$('#map').width(mapParentWidth*.75);
+    	$('#map').height(3 * mapParentWidth / 4);
+    }
+    	google.maps.event.trigger($('#map resize'));
+
 
 }
 

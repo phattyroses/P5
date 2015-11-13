@@ -26,10 +26,20 @@ height: 100%;
 	margin-top: 0px;
 }
 
+@media (max-height: 400px){
+	#searchRow, h1{
+		display: none !important;
+	}
+	li{
+		display: inline-table;
+		border: 0px;
+	}
+}
+
 li{
 	list-style: none;
-	margin-bottom: 10px;
-	border: 2px solid black;
+	margin-bottom: .25em;
+	border: .1em solid black;
 }
 
 h1{
