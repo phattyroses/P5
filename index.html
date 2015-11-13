@@ -15,7 +15,7 @@
   		<div class="row" id="searchRow">
   			<div class="input-group">
   			<form data-bind="submit: returnSearch()">
-  				<input class="form-control" placeholder="Search" data-bind="textInput: searchValue">
+  				<input class="form-control" placeholder="Search" id="searchID" data-bind="value: searchValue, valueUpdate: 'keyup', event:{keyup: filterList}">
   				<button type="submit" id="subBut">Submit</button>
   				<button type="Reset" id="resBut" data-bind="click: resetForm">Reset List</button>
   			</form>

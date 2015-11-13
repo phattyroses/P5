@@ -120,6 +120,9 @@ var ViewModel = function(){
 	this.addName = function(placesIndex){
 		self.placesList([placesIndex]);
 		};
+	this.addOtherName = function(placesIndex){
+		self.placesList.push(placesIndex);
+	}
 	//Clears 'placesList' of all contents
 	this.removeNames = function(newName){
 		self.placesList([]);
@@ -155,6 +158,8 @@ var ViewModel = function(){
 this.listNamesPop();
 this.markersPop();
 
+
+
 //Resets the list of names and the markers on the map.  Called by the 'Reset List' button and by searches for values not contained
 //within the list.
 this.resetForm = function(){
@@ -183,13 +188,45 @@ this.resetForm = function(){
     				markers[data.markerIndex].setAnimation(google.maps.Animation.BOUNCE);
   				}
   			//});
-		console.log("data is" +data);
-		console.log("markers[data.markerIndex]"+markers[data.markerIndex]);
+
 
 	}
 
 	//Stores the value returned when the 'Submit' button is pressed
 	this.searchValue = ko.observable('');
+//This function updates as the user types into the search bar and filters the results accordingly.
+	this.filterList = function(data, event){
+
+		//Contains the returned vales from 'searchIndex'
+		valuesArray = [];
+		//Iterate through all the places
+		for (var i = 0; i<places.length; i++){
+			//compare the lower case version of each title in places with the lowercase version of what is being typed in.
+			//If there is NOT a match, -1 is returned.
+			var searchIndex = places[i].title.toLowerCase().search(event.currentTarget.value.toLowerCase());
+			//push the value returned in 'searchIndex' to the 'valuesArray'
+			valuesArray.push(searchIndex);
+		}
+
+		//clear these so they can be updated without duplication
+		self.placesList([]);
+		self.clearMarkers();
+		//Iterate through all the values in 'valuesArray'
+		for (var j=0; j<valuesArray.length; j++){
+			//store the current value of j
+			var index = j;
+			//Imediatly call a function to use the value stored in 'index'
+				 (function(index){
+				 	//compare the current value in the 'valuesArray' to see if it is a matching substring (ie, not -1)
+					if (valuesArray[index].valueOf() !== -1){
+					//If there is a match, place the markers and list items on the screen
+					markers[index].setMap(map);
+					self.addOtherName(places[index]);
+					}
+				})(index);
+		}
+	return true;
+	}
 	//Function called by search (when 'Submit' button is pressed)
 	//Check the returned value from the search against the values stored in the 'places' array
 	this.returnSearch = ko.observable(function(){
@@ -226,5 +263,7 @@ this.resetForm = function(){
 	});
 
 }
+
 //Apply the bindings between ViewModel and the UI
 ko.applyBindings(new ViewModel());
+
