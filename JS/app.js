@@ -57,6 +57,65 @@ var places = [
 
 ];
 
+var yelpReviews = [{
+    "is_claimed": true,
+    "rating": 4.5,
+    "mobile_url": "http://m.yelp.com/biz/antonios-amherst",
+    "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
+    "review_count": 313,
+    "name": "Antonio's",
+    "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
+    "url": "http://www.yelp.com/biz/antonios-amherst",
+    "categories": [
+        [
+            "Pizza",
+            "pizza"
+        ]
+    ],
+    "reviews": [
+        {
+            "rating": 5,
+            "excerpt": "This is coming from someone from New York City/New Jersey (aka the pizza capital of the U.S.).\n\nAntonio's is AWESOME. I only had a plain slice but it was...",
+            "time_created": 1446671089,
+            "rating_image_url": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/f1def11e4e79/ico/stars/v1/stars_5.png",
+            "rating_image_small_url": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/c7623205d5cd/ico/stars/v1/stars_small_5.png",
+            "user": {
+                "image_url": "http://s3-media2.fl.yelpcdn.com/photo/2oG_rAY_yLnDvJE6a5-tMA/ms.jpg",
+                "id": "NKFTqBkEix7DzhEMlvhzAw",
+                "name": "Nicole S."
+            },
+            "rating_image_large_url": "http://s3-media3.fl.yelpcdn.com/assets/2/www/img/22affc4e6c38/ico/stars/v1/stars_large_5.png",
+            "id": "1AR-CqiouY7AUuMgHPAcew"
+        }
+    ],
+    "phone": "4132530808",
+    "snippet_text": "This is coming from someone from New York City/New Jersey (aka the pizza capital of the U.S.).\n\nAntonio's is AWESOME. I only had a plain slice but it was...",
+    "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/RNtEyXyr_WIgnJiMV55fIQ/ms.jpg",
+    "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/2oG_rAY_yLnDvJE6a5-tMA/ms.jpg",
+    "display_phone": "+1-413-253-0808",
+    "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
+    "id": "antonios-amherst",
+    "is_closed": false,
+    "location": {
+        "city": "Amherst",
+        "display_address": [
+            "31 N Pleasant St",
+            "Amherst, MA 01002"
+        ],
+        "geo_accuracy": 8.0,
+        "postal_code": "01002",
+        "country_code": "US",
+        "address": [
+            "31 N Pleasant St"
+        ],
+        "coordinate": {
+            "latitude": 42.3761863708496,
+            "longitude": -72.5196075439453
+        },
+        "state_code": "MA"
+    }
+}
+]
 //An initialization of the global map variable.  This refers to the map itself.
 var map;
 
@@ -87,7 +146,7 @@ var populateMap = function(){
   				}
   			});
 	  				 infoWindow = new google.maps.InfoWindow({
-						content: "placeHolder"
+						content: yelpReviews[0].name
 					});
 		})(marker);
 
@@ -111,8 +170,6 @@ var initMap = function() {
   });
    //Call function to put markers on the map
    populateMap();
-
-
 
 
   //Resizes the map as the window size is adjusted.  Adapted from http://softwarewalker.com/2014/05/07/using-google-maps-in-a-responsive-design/
@@ -140,6 +197,19 @@ var resizeBootstrapMap =function () {
 
 
 }
+
+
+$.ajax({url:'https://twitter.com/search?q=%40twitterapi',
+		dataType: 'jsonp',
+		jsonp: 'callback',
+		success: function(data){
+			alert('success');
+		}
+
+	})
+
+
+
 
 $(window).resize(resizeBootstrapMap);
 
