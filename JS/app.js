@@ -41,7 +41,7 @@ var places = [
 	position: {lat: 42.375983, lng: -72.518432},
 	map: map,
 	varName: "Bueno",
-	markerIndex: 2,
+	markerIndex: 1,
 	fourURL: '4ba13b82f964a52067a437e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
 	image: 'images/bueno.jpg'
 },
@@ -56,7 +56,7 @@ var places = [
 	position: {lat: 42.375609, lng: -72.518150},
 	map: map,
 	varName: "BlackSheep",
-	markerIndex: 4,
+	markerIndex: 2,
 	fourURL: '4abbc3c4f964a520c88420e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
 	image: 'images/blackSheep.jpg'
 },
@@ -65,7 +65,7 @@ var places = [
 	position: {lat: 42.376470, lng: -72.519666},
 	map: map,
 	varName: "Judie",
-	markerIndex: 5,
+	markerIndex: 3,
 	fourURL: '4b84d0c3f964a520c34431e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
 	image: 'images/judy.jpg'
 
@@ -75,7 +75,7 @@ var places = [
 	position: {lat: 42.377180, lng: -72.519186},
 	map: map,
 	varName: "Panda",
-	markerIndex: 6,
+	markerIndex: 4,
 	fourURL: '4acbcd91f964a520bbc720e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
 	image: 'images/panda.jpg'
 }
@@ -110,7 +110,7 @@ var ajaxCall= function(urlIndex, imageIndex){
 
 	})
 }
-ajaxCall(places[4].fourURL, places[4].image);
+//ajaxCall(places[4].fourURL, places[4].image);
 
 //An initialization of the global map variable.  This refers to the map itself.
 var map;
@@ -123,15 +123,17 @@ var infoWindow;
 var populateMap = function(){
 	//markers = [''];
 		for(var i=0; i<places.length; i++){
-
+		placeHolder = places[i];
 		 marker = new google.maps.Marker({
     		position: places[i].position,
     		animation: google.maps.Animation.DROP,
-    		map: map
+    		map: map,
+    		title: 'Get More Information'
 		});
+
 		 //imediately call this function to get the current state of 'marker'(passed as a param. assigned to each new marker) so
 		 //that only the marker selected will animate and not just the last marker.
-		(function(currentMarker){
+		(function(currentMarker, place){
 	  		currentMarker.addListener('click', function(){
 
 
@@ -140,7 +142,12 @@ var populateMap = function(){
 	  			if (currentMarker.getAnimation() !== null) {
     				currentMarker.setAnimation(null);
     				infoWindow.close(map, currentMarker);
+    				//else if the marker clicked isn't bouncing, before starting all others should stop first.
   				} else {
+  					for (var i=0; i<markers.length; i++){
+  						markers[i].setAnimation(null);
+  					}
+  					ajaxCall(place.fourURL, place.image);
     				currentMarker.setAnimation(google.maps.Animation.BOUNCE);
     				infoWindow.open(map, currentMarker);
   				}
@@ -148,7 +155,14 @@ var populateMap = function(){
 	  				 infoWindow = new google.maps.InfoWindow({
 						//content: infoContent
 						content: '<div>'+menuHolder+'</div>',
-						maxWidth: 600
+					})
+
+
+		})(marker, placeHolder);
+		(function(currentMarker){
+			google.maps.event.addListener(infoWindow,'closeclick', function(){
+						currentMarker.setAnimation(null);
+    					infoWindow.close(map, currentMarker);
 					});
 		})(marker);
 
@@ -160,9 +174,11 @@ var populateMap = function(){
 };
 
 
+
+
 //This function is called when the google maps script is initially run.  Sets up the map on the screen.
 var initMap = function() {
-	var mapCenter = {lat: 42.376473, lng: -72.518734};
+	var mapCenter = {lat: 42.379726, lng: -72.519875};
    map = new google.maps.Map(document.getElementById('map'),
    {
     center: mapCenter,
@@ -299,6 +315,10 @@ this.resetForm = function(){
     				markers[data.markerIndex].setAnimation(null);
     				infoWindow.close(map, markers[data.markerIndex]);
   				} else {
+  					for (var i=0; i<markers.length; i++){
+  						markers[i].setAnimation(null);
+  					}
+  					ajaxCall(data.fourURL, data.image);
     				markers[data.markerIndex].setAnimation(google.maps.Animation.BOUNCE);
     				infoWindow.open(map, markers[data.markerIndex]);
   				}
