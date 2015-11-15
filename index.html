@@ -1,49 +1,54 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Simple Map</title>
-    <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
-    <script src="JS/jquery.min.js"></script>
-  	<link rel="stylesheet" href="CSS/bootstrap-grid.css" type="text/css">
-  	<link rel="stylesheet" href="CSS/style.css" type="text/css">
-    <script src="JS/oauth-1.0a.js"></script>
 
-  </head>
-  <body>
-  	<div class="container">
-  		<div class="row" id="headerRow">
-  			<h1>Downtown Amherst, MA</h1>
-  		</div>
-  		<div class="row" id="searchRow">
-  			<div class="input-group">
-  			<form >
-  				<input class="col-sm-2 form-control" placeholder="Filter List" id="searchID" autocomplete="off" data-bind="value: searchValue, valueUpdate: 'keyup', event:{keyup: filterList}">
-  				<button type="text">Reset</button>
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <script src="JS/jquery.min.js"></script>
+  <link rel="stylesheet" href="CSS/bootstrap-grid.css"
+  type="text/css">
+  <link rel="stylesheet" href="CSS/style.css"
+  type="text/css">
+  <script src="JS/oauth-1.0a.js"></script>
 
+</head>
 
-  			</form>
-  			</div>
-  		</div>
-  		<div class="row" id="mapRow">
-  			<ul class=" col-sm-2 " id="listCol" data-bind="foreach: placesList">
-  				<li data-bind="text: title, click: $parent.animateFromList"></li>
-  			</ul>
-			<div class =" col-sm-10 " id="map" ></div>
-		</div>
-	</div>
-
-   <script src="JS/knockout-3.2.0.js"></script>
-    <script src="JS/app.js"></script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOzHU6514bivAZ_UIhpRwaYXcNTTLfrqs&callback=initMap"
-        async defer></script>
+<body>
+  <div class="container">
+    <div class="row" id="headerRow">
+      <h1>Downtown Amherst, MA</h1>
+    </div>
+    <div class="row" id="searchRow">
+      <div class="input-group">
+        <form>
+          <input class="col-sm-2 form-control" placeholder="Filter List"
+          id="searchID" autocomplete="off"
+          data-bind="value: searchValue, valueUpdate: 'keyup', event:{keyup: filterList}">
+          <button type="text">Reset</button>
 
 
-  </body>
-  <!-- sha1 -->
+        </form>
+      </div>
+    </div>
+    <div class="row" id="mapRow">
+      <ul class=" col-sm-2 " id="listCol" data-bind="foreach: placesList">
+        <li data-bind="text: title, click: $parent.animateFromList"></li>
+      </ul>
+      <div class=" col-sm-10 " id="map"></div>
+    </div>
+  </div>
+
+  <script src="JS/knockout-3.2.0.js"></script>
+  <script src="JS/app.js"></script>
+
+  <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOzHU6514bivAZ_UIhpRwaYXcNTTLfrqs&callback=initMap"
+  async defer></script>
+
+
+</body>
+<!-- sha1 -->
 
 
 </html>
-

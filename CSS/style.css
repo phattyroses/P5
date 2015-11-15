@@ -1,60 +1,59 @@
  html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        background-color: darkGrey;
-      }
-.container{
-height: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: darkGrey;
 }
 
-#map{
-	height: 100%;
-	margin-top: 0px;
+.container {
+    height: 100%;
 }
 
-#mapRow{
-	height: 100%;
-	margin-top: 0px;
+#map {
+    height: 100%;
+    margin-top: 0px;
 }
 
-#searchID{
-	margin-bottom: 40px;
+#mapRow {
+    margin-top: 0px;
 }
 
-#listCol{
-	margin-top: 0px;
+#searchID {
+    margin-bottom: 40px;
 }
 
-@media (max-height: 400px){
-	#searchRow, h1{
-		display: none !important;
-	}
-	li{
-		display: inline-table;
-		border: 0px;
-	}
+#listCol {
+    margin-top: 0px;
 }
 
-li{
-	list-style: none;
-	margin-bottom: .25em;
-	border: .1em solid black;
+@media (max-height: 400px) {
+    #searchRow, h1 {
+        display: none !important;
+    }
+
+    li {
+        display: inline-table;
+        border: 0px;
+    };
 }
 
-h1{
-	text-align: center;
+li {
+    list-style: none;
+    margin-bottom: .25em;
+    border: .1em solid black;
 }
 
-#infoImage{
-	height: 50%;
+h1 {
+    text-align: center;
 }
 
-#phoneHolder{
-	text-align: center;
+#infoImage {
+    height: 50%;
 }
 
-#map{
-	background-color: black;
+#phoneHolder {
+    text-align: center;
 }
+
+
 
