@@ -27,46 +27,57 @@ var places = [
 	fourURL: '4aca36f3f964a520e8c020e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
 	image: 'images/antonios.jpg'
 },
-{
+/*{
 	title: "Rao's Coffee",
 	position: {lat: 42.377372, lng: -72.518867},
 	map: map,
 	varName : "Rao",
-	markerIndex: 1
-},
+	markerIndex: 1,
+	fourURL: '4a922525f964a520df1c20e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
+	image: 'images/raos.jpg'
+},*/
 {
 	title: "Bueno Y Sano",
 	position: {lat: 42.375983, lng: -72.518432},
 	map: map,
 	varName: "Bueno",
-	markerIndex: 2
+	markerIndex: 2,
+	fourURL: '4ba13b82f964a52067a437e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
+	image: 'images/bueno.jpg'
 },
-{
+/*{
 	title: "Subway",
 	position: {lat: 42.375827, lng: -72.519603},
 	varName: "Subway",
 	markerIndex: 3
-},
+},*/
 {
 	title: "The Black Sheep",
 	position: {lat: 42.375609, lng: -72.518150},
 	map: map,
 	varName: "BlackSheep",
-	markerIndex: 4
+	markerIndex: 4,
+	fourURL: '4abbc3c4f964a520c88420e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
+	image: 'images/blackSheep.jpg'
 },
 {
 	title: "Judie's Restaurant",
 	position: {lat: 42.376470, lng: -72.519666},
 	map: map,
 	varName: "Judie",
-	markerIndex: 5
+	markerIndex: 5,
+	fourURL: '4b84d0c3f964a520c34431e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
+	image: 'images/judy.jpg'
+
 },
 {
 	title: "Panda East Chinese Restaurant",
 	position: {lat: 42.377180, lng: -72.519186},
 	map: map,
 	varName: "Panda",
-	markerIndex: 6
+	markerIndex: 6,
+	fourURL: '4acbcd91f964a520bbc720e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
+	image: 'images/panda.jpg'
 }
 
 ];
@@ -88,18 +99,18 @@ var ajaxCall= function(urlIndex, imageIndex){
 				facebookHolder = data.response.venue.contact.facebookUsername;
 				urlHolder = data.response.venue.url;
 				phraseZeroHolder = data.response.venue.phrases[0].sample.text;
-				phraseOneHolder = data.response.venue.phrases[1].sample.text;
-				phraseTwoHolder = data.response.venue.phrases[2].sample.text;
+				rating = data.response.venue.rating;
+				//phraseTwoHolder = data.response.venue.phrases[2].sample.text;
 				formattedString = '<h2>'+nameHolder+'</h2><p>URL: '+urlHolder+'</p><p>Phone Number: '+ phoneHolder +'</p><p>Twitter: '+twitterHolder+'</p>'+
 										'<p>Facebook: facebook.com/'+facebookHolder+' </p><img src ="'+imageHolder+'"><h3>What People Are Saying:</h3>'+
-										'<p>"'+phraseZeroHolder+'"</p><p>"'+phraseOneHolder+'"</p><p>"'+phraseTwoHolder+'"</p>'
+										'<p>'+phraseZeroHolder+'</p><p>Rating '+rating+'</p>'//<p>"'+phraseTwoHolder+'"</p>'
 
 				infoWindow.setContent(formattedString);
 				}
 
 	})
 }
-ajaxCall(places[0].fourURL, places[0].image);
+ajaxCall(places[4].fourURL, places[4].image);
 
 //An initialization of the global map variable.  This refers to the map itself.
 var map;
