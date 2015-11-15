@@ -45,3 +45,16 @@ li{
 h1{
 	text-align: center;
 }
+
+#infoImage{
+	height: 50%;
+}
+
+#phoneHolder{
+	text-align: center;
+}
+
+#map{
+	background-color: black;
+}
+

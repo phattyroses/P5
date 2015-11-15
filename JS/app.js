@@ -2,6 +2,18 @@
 var APIKey = 'AIzaSyBOzHU6514bivAZ_UIhpRwaYXcNTTLfrqs';
 //Array to hold all the markers created by 'populateMap'
 var markers = [];
+
+
+var CLIENT_ID = '2UKHNR0FBMK41ZVHJ0VWFN5WVGH0B4TAQBQ2EEE4MBE51YEA';
+var CLIENT_SECRET = '2UKHNR0FBMK41ZVHJ0VWFN5WVGH0B4TAQBQ2EEE4MBE51YEA';
+//var infoContent = '<div>'+ menuHolder +'</div>';
+
+
+var menuHolder =[]
+
+
+//Array to hold parsed JSON data from FourSquare.  Elements are: 0: Name,
+
 //This is the data.  Hardcoding more data will automatically update the list of places and the markers on the map.  However,
 //if more places are added, additional 'else if' conditions will need to be added with index updates to correspond
 //with the index of the new entry.
@@ -11,7 +23,9 @@ var places = [
 	position: {lat: 42.376207, lng: -72.519618},
 	map: map,
 	varName : "antonio",
-	markerIndex: 0
+	markerIndex: 0,
+	fourURL: '4aca36f3f964a520e8c020e3?oauth_token=TTAIIQUS3BHPST0N5TCGDHNXQSMWVTTI0HR5V2JPUAKHZPNU',
+	image: 'images/antonios.jpg'
 },
 {
 	title: "Rao's Coffee",
@@ -57,69 +71,40 @@ var places = [
 
 ];
 
-var yelpReviews = [{
-    "is_claimed": true,
-    "rating": 4.5,
-    "mobile_url": "http://m.yelp.com/biz/antonios-amherst",
-    "rating_img_url": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/99493c12711e/ico/stars/v1/stars_4_half.png",
-    "review_count": 313,
-    "name": "Antonio's",
-    "rating_img_url_small": "http://s3-media2.fl.yelpcdn.com/assets/2/www/img/a5221e66bc70/ico/stars/v1/stars_small_4_half.png",
-    "url": "http://www.yelp.com/biz/antonios-amherst",
-    "categories": [
-        [
-            "Pizza",
-            "pizza"
-        ]
-    ],
-    "reviews": [
-        {
-            "rating": 5,
-            "excerpt": "This is coming from someone from New York City/New Jersey (aka the pizza capital of the U.S.).\n\nAntonio's is AWESOME. I only had a plain slice but it was...",
-            "time_created": 1446671089,
-            "rating_image_url": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/f1def11e4e79/ico/stars/v1/stars_5.png",
-            "rating_image_small_url": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/c7623205d5cd/ico/stars/v1/stars_small_5.png",
-            "user": {
-                "image_url": "http://s3-media2.fl.yelpcdn.com/photo/2oG_rAY_yLnDvJE6a5-tMA/ms.jpg",
-                "id": "NKFTqBkEix7DzhEMlvhzAw",
-                "name": "Nicole S."
-            },
-            "rating_image_large_url": "http://s3-media3.fl.yelpcdn.com/assets/2/www/img/22affc4e6c38/ico/stars/v1/stars_large_5.png",
-            "id": "1AR-CqiouY7AUuMgHPAcew"
-        }
-    ],
-    "phone": "4132530808",
-    "snippet_text": "This is coming from someone from New York City/New Jersey (aka the pizza capital of the U.S.).\n\nAntonio's is AWESOME. I only had a plain slice but it was...",
-    "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/RNtEyXyr_WIgnJiMV55fIQ/ms.jpg",
-    "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/2oG_rAY_yLnDvJE6a5-tMA/ms.jpg",
-    "display_phone": "+1-413-253-0808",
-    "rating_img_url_large": "http://s3-media4.fl.yelpcdn.com/assets/2/www/img/9f83790ff7f6/ico/stars/v1/stars_large_4_half.png",
-    "id": "antonios-amherst",
-    "is_closed": false,
-    "location": {
-        "city": "Amherst",
-        "display_address": [
-            "31 N Pleasant St",
-            "Amherst, MA 01002"
-        ],
-        "geo_accuracy": 8.0,
-        "postal_code": "01002",
-        "country_code": "US",
-        "address": [
-            "31 N Pleasant St"
-        ],
-        "coordinate": {
-            "latitude": 42.3761863708496,
-            "longitude": -72.5196075439453
-        },
-        "state_code": "MA"
-    }
+//ajax call to be made when a marker or list item is clicked
+var ajaxCall= function(urlIndex, imageIndex){
+	$.ajax({url:'https://api.foursquare.com/v2/venues/'+urlIndex+'&v=20151114&client_id='+CLIENT_ID+'&client_secret='+ CLIENT_SECRET+ '&v=20130815&ll=40.7,-74',
+				dataType: 'jsonp',
+				success: function(data){
+				console.log(data.response.venue.contact);
+				console.log(data);
+ 				menuHolder.push(data.response.venue.name);
+				console.log(menuHolder);
+				$('#mapRow').append(menuHolder);
+				nameHolder = data.response.venue.name
+				phoneHolder = data.response.venue.contact.formattedPhone
+				imageHolder = imageIndex;
+				twitterHolder = data.response.venue.contact.twitter;
+				facebookHolder = data.response.venue.contact.facebookUsername;
+				urlHolder = data.response.venue.url;
+				phraseZeroHolder = data.response.venue.phrases[0].sample.text;
+				phraseOneHolder = data.response.venue.phrases[1].sample.text;
+				phraseTwoHolder = data.response.venue.phrases[2].sample.text;
+				formattedString = '<h2>'+nameHolder+'</h2><p>URL: '+urlHolder+'</p><p>Phone Number: '+ phoneHolder +'</p><p>Twitter: '+twitterHolder+'</p>'+
+										'<p>Facebook: facebook.com/'+facebookHolder+' </p><img src ="'+imageHolder+'"><h3>What People Are Saying:</h3>'+
+										'<p>"'+phraseZeroHolder+'"</p><p>"'+phraseOneHolder+'"</p><p>"'+phraseTwoHolder+'"</p>'
+
+				infoWindow.setContent(formattedString);
+				}
+
+	})
 }
-]
+ajaxCall(places[0].fourURL, places[0].image);
+
 //An initialization of the global map variable.  This refers to the map itself.
 var map;
 
-
+$
 
 //Creats and adds all markers to the map based on the data in 'places' and pushes these markers to the 'markers' array.
 var marker;
@@ -137,6 +122,10 @@ var populateMap = function(){
 		 //that only the marker selected will animate and not just the last marker.
 		(function(currentMarker){
 	  		currentMarker.addListener('click', function(){
+
+
+		//menuHolder.push(phoneNumber);
+
 	  			if (currentMarker.getAnimation() !== null) {
     				currentMarker.setAnimation(null);
     				infoWindow.close(map, currentMarker);
@@ -146,7 +135,9 @@ var populateMap = function(){
   				}
   			});
 	  				 infoWindow = new google.maps.InfoWindow({
-						content: yelpReviews[0].name
+						//content: infoContent
+						content: '<div>'+menuHolder+'</div>',
+						maxWidth: 600
 					});
 		})(marker);
 
@@ -199,18 +190,11 @@ var resizeBootstrapMap =function () {
 }
 
 
-$.ajax({url:'https://twitter.com/search?q=%40twitterapi',
-		dataType: 'jsonp',
-		jsonp: 'callback',
-		success: function(data){
-			alert('success');
-		}
-
-	})
 
 
 
 
+console.log(menuHolder);
 $(window).resize(resizeBootstrapMap);
 
 //This is the ViewModel for interacting with the UI.  Uses knockout.js.
@@ -219,10 +203,21 @@ var ViewModel = function(){
 	var self = this;
 	//Observable array which starts as a copy of the places array.
 	this.placesList = ko.observableArray([]);
-
+	this.search_term = 'bowery';
 	//Observable array which starts as a copy of the markers array. Populated by 'markersPop()'
 	this.markersList = ko.observableArray([]);
 
+	/*this.searchTwitter = function(search_term){
+		console.log("searchTwitter initiated");
+		$.ajax({
+				url: 'http://search.twitter.com/search.json?'+ search_term,
+				dataType: 'jsonp',
+				success: function(data){
+					console.log(search_term);
+				}
+			});
+		}
+*/
 	//Adds an object literal to 'placesList'
 	this.addName = function(placesIndex){
 		self.placesList([placesIndex]);
