@@ -9,7 +9,7 @@ var CLIENT_ID = '2UKHNR0FBMK41ZVHJ0VWFN5WVGH0B4TAQBQ2EEE4MBE51YEA';
 var CLIENT_SECRET = '2UKHNR0FBMK41ZVHJ0VWFN5WVGH0B4TAQBQ2EEE4MBE51YEA';
 //var infoContent = '<div>'+ menuHolder +'</div>';
 
-var menuHolder = []
+var menuHolder = [];
 
 //Array to hold parsed JSON data from FourSquare.  Elements are: 0: Name,
 
@@ -123,7 +123,7 @@ var marker;
 var infoWindow;
 var populateMap = function()
 {
-  for (var i = 0; i < places.length; i++)
+  for (var i = 0, j=places.length; i < j; i++)
   {
     var placeHolder = places[i];
     marker = new google.maps.Marker(
@@ -148,7 +148,7 @@ var populateMap = function()
         }
         else
         {
-          for (var i = 0; i < markers.length; i++)
+          for (var i = 0, j=markers.length; i < j; i++)
           {
             markers[i].setAnimation(null);
           }
@@ -164,11 +164,16 @@ var populateMap = function()
       })
 
     })(marker, placeHolder);
+
+
     //Function to stop the marker animation if the window is closed via the "x" by the user.
     (function(currentMarker)
     {
       google.maps.event.addListener(infoWindow, 'closeclick', function()
-      {
+      {  for (var i = 0, j=markers.length; i < j; i++)
+          {
+            markers[i].setAnimation(null);
+          }
         currentMarker.setAnimation(null);
         infoWindow.close(map, currentMarker);
       });
@@ -240,71 +245,71 @@ var ViewModel = function()
 
   var self = this;
   //Observable array which starts as a copy of the places array.
-  this.placesList = ko.observableArray([]);
+  self.placesList = ko.observableArray([]);
   //Observable array which starts as a copy of the markers array. Populated by 'markersPop()'
-  this.markersList = ko.observableArray([]);
+  self.markersList = ko.observableArray([]);
 
   //Adds an object literal to 'placesList'
-  this.addName = function(placesIndex)
+  self.addName = function(placesIndex)
   {
     self.placesList([placesIndex]);
   };
-  this.addOtherName = function(placesIndex)
+  self.addOtherName = function(placesIndex)
     {
       self.placesList.push(placesIndex);
     }
     //Clears 'placesList' of all contents
-  this.removeNames = function(newName)
+  self.removeNames = function(newName)
   {
     self.placesList([]);
   }
 
   //Sets all the markers on the map
-  this.setMapOnAll = function(map)
+  self.setMapOnAll = function(map)
     {
-      for (var i = 0; i < markers.length; i++)
+      for (var i = 0, j=markers.length; i < j; i++)
       {
         markers[i].setMap(map);
       }
     }
     //Removes all markers from the map
-  this.clearMarkers = function()
+  self.clearMarkers = function()
     {
-      this.setMapOnAll(null);
+      self.setMapOnAll(null);
     }
     //Function for populating the initial list of names, 'placesList'
-  this.listNamesPop = function()
+  self.listNamesPop = function()
   {
-    for (var i = 0; i < places.length; i++)
+    for (var i = 0, j=places.length; i < j; i++)
     {
-      this.placesList().push(places[i]);
+      self.placesList().push(places[i]);
     }
   };
   //Function for populating the initial list of markers, 'markersList'
-  this.markersPop = function()
+  self.markersPop = function()
     {
-      for (var i = 0; i < markers.length; i++)
+      for (var i = 0, j=markers.length; i < j; i++)
       {
         self.markersList.push(markers[i]);
       }
     }
     //initial population of the list of names and the markers on the map
-  this.listNamesPop();
-  this.markersPop();
+  self.listNamesPop();
+  self.markersPop();
 
   //Resets the list of names and the markers on the map.  Called by the 'Reset List' button and by searches for values not contained
   //within the list.
-  this.resetForm = function()
+  self.resetForm = function()
   {
-    this.removeNames();
-    for (var i = 0; i < markers.length; i++)
+    self.removeNames();
+    for (var i = 0, j=markers.length; i < j; i++)
     {
       markers[i].setMap(map);
     }
 
-    for (var i = 0; i < places.length; i++)
+    for (var i = 0, j=places.length; i < j; i++)
     {
-      this.placesList.push(places[i]);
+      self.placesList.push(places[i]);
     }
   }
 
@@ -312,7 +317,7 @@ var ViewModel = function()
   //markerIndex which corresponds to marker in "markerList".  This function simply indexes into the 'markers' array via
   //its associated 'placesList' object, and then toggles its animated state.  Because a click on the actual map marker also toggles
   // via a similar function, clicking either the map marker or its associated list marker will toggle the state.
-  this.animateFromList = function(data)
+  self.animateFromList = function(data)
   {
 
     if (markers[data.markerIndex].getAnimation() !== null)
@@ -322,7 +327,7 @@ var ViewModel = function()
     }
     else
     {
-      for (var i = 0; i < markers.length; i++)
+      for (var i = 0, j=markers.length; i < j; i++)
       {
         markers[i].setAnimation(null);
       }
@@ -333,28 +338,30 @@ var ViewModel = function()
   }
 
   //Stores the value returned when the 'Submit' button is pressed
-  this.searchValue = ko.observable('');
+  self.searchValue = ko.observable('');
 
   //This function updates as the user types into the search bar and filters the results accordingly.
-  this.filterList = function(data, event)
+  self.filterList = function(data, event)
   {
+
     //Contains the returned vales from 'searchIndex'
     var valuesArray = [];
     //Iterate through all the places
-    for (var i = 0; i < places.length; i++)
+    for (var i = 0, j= places.length; i < j; i++)
     {
       //compare the lower case version of each title in places with the lowercase version of what is being typed in.
       //If there is NOT a match, -1 is returned.
-      var searchIndex = places[i].title.toLowerCase().search(event.currentTarget.value.toLowerCase());
+      self.searchIndex = places[i].title.toLowerCase().search(self.searchValue().toLowerCase());
       //push the value returned in 'searchIndex' to the 'valuesArray'
-      valuesArray.push(searchIndex);
+      valuesArray.push(self.searchIndex);
+
     }
 
     //clear these so they can be updated without duplication
     self.placesList([]);
     self.clearMarkers();
     //Iterate through all the values in 'valuesArray'
-    for (var j = 0; j < valuesArray.length; j++)
+    for (var j = 0, k= valuesArray.length; j < k; j++)
     {
       //store the current value of j
       var index = j;
