@@ -1,59 +1,54 @@
- html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: darkGrey;
+ html,
+ body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #d3d3d3;
 }
 
 .container {
-    height: 100%;
+  height: 100%;
 }
 
-#map {
-    height: 100%;
-    margin-top: 0px;
+.map {
+  height: 100%;
+  margin-top: 0;
 }
 
-#mapRow {
-    margin-top: 0px;
+.mapRow {
+  margin-top: 0;
 }
 
-#searchID {
-    margin-bottom: 40px;
+.searchID {
+  margin-bottom: 40px;
 }
 
-#listCol {
-    margin-top: 0px;
+.listCol {
+  margin-top: 0;
 }
 
 @media (max-height: 400px) {
-    #searchRow, h1 {
-        display: none !important;
-    }
+  .searchRow, h1 {
+    display: none !important;
+  }
 
-    li {
-        display: inline-table;
-        border: 0px;
-    };
+  li {
+    display: inline-table;
+    border: 0;
+  };
 }
 
 li {
-    list-style: none;
-    margin-bottom: .25em;
-    border: .1em solid black;
+  list-style: none;
+  margin-bottom: .25em;
+  border: .1em solid #000000;
 }
 
 h1 {
-    text-align: center;
+  text-align: center;
 }
 
-#infoImage {
-    height: 50%;
-}
 
-#phoneHolder {
-    text-align: center;
-}
 
 
 

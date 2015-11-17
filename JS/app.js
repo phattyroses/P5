@@ -1,5 +1,8 @@
-"use strict";
+var useStrict = function(){
+  "use strict";
+};
 
+useStrict();
 //Variable for holding the unique google maps API key
 var APIKey = 'AIzaSyBOzHU6514bivAZ_UIhpRwaYXcNTTLfrqs';
 //Array to hold all the markers created by 'populateMap'
@@ -11,7 +14,6 @@ var CLIENT_SECRET = '2UKHNR0FBMK41ZVHJ0VWFN5WVGH0B4TAQBQ2EEE4MBE51YEA';
 
 var menuHolder = [];
 
-//Array to hold parsed JSON data from FourSquare.  Elements are: 0: Name,
 
 //This is the data.  Hardcoding more data will automatically update the list of places and the markers on the map.  However,
 //if more places are added, additional 'else if' conditions will need to be added with index updates to correspond
@@ -88,7 +90,12 @@ var places = [
 
 //ajax call to be made when a marker or list item is clicked
 var ajaxCall = function(urlIndex, imageIndex)
-{
+{     //First clear that content of the infoWindow so it loads cleanly subsequently.
+      infoWindow.setContent('');
+      //Then set a timer to catch loading issues.  Necessary to use this because of JSONP.
+      var timer = setTimeout(function(){
+        alert("AJAX error");
+          }, 3000);
   $.ajax(
   {
     url: 'https://api.foursquare.com/v2/venues/' + urlIndex + '&v=20151114&client_id=' + CLIENT_ID + '&client_secret=' + CLIENT_SECRET + '&v=20130815&ll=40.7,-74',
@@ -96,8 +103,8 @@ var ajaxCall = function(urlIndex, imageIndex)
     success: function(data)
     {
       menuHolder.push(data.response.venue.name);
-      var nameHolder = data.response.venue.name
-      var phoneHolder = data.response.venue.contact.formattedPhone
+      var nameHolder = data.response.venue.name;
+      var phoneHolder = data.response.venue.contact.formattedPhone;
       var imageHolder = imageIndex;
       var twitterHolder = data.response.venue.contact.twitter;
       var facebookHolder = data.response.venue.contact.facebookUsername;
@@ -107,13 +114,13 @@ var ajaxCall = function(urlIndex, imageIndex)
       var fourSquareImg = 'images/foursquare.png';
       var formattedString = '<h2><img src ="' + fourSquareImg + '">' + nameHolder + '</h2><p>URL: ' + urlHolder + '</p><p>Phone Number: ' + phoneHolder + '</p><p>Twitter: ' + twitterHolder + '</p>' +
         '<p>Facebook: facebook.com/' + facebookHolder + ' </p><img src ="' + imageHolder + '"><h3>What People Are Saying:</h3>' +
-        '<p>' + phraseZeroHolder + '</p><p>Rating ' + rating + '</p>' //<p>"'+phraseTwoHolder+'"</p>'
-
+        '<p>' + phraseZeroHolder + '</p><p>Rating ' + rating + '</p>';
       infoWindow.setContent(formattedString);
+      //Finally, clear the timer upon a successful AJAX call.
+      clearTimeout(timer);
     }
-
-  })
-}
+  });
+};
 
 //An initialization of the global map variable.  This refers to the map itself.
 var map;
@@ -121,24 +128,8 @@ var map;
 //Creats and adds all markers to the map based on the data in 'places' and pushes these markers to the 'markers' array.
 var marker;
 var infoWindow;
-var populateMap = function()
-{
-  for (var i = 0, j=places.length; i < j; i++)
-  {
-    var placeHolder = places[i];
-    marker = new google.maps.Marker(
-    {
-      position: places[i].position,
-      animation: google.maps.Animation.DROP,
-      map: map,
-      title: 'Get More Information'
-    });
-
-    //imediately call this function to get the current state of 'marker'(passed as a param. assigned to each new marker) so
-    //that only the marker selected will animate and not just the last marker.
-    (function(currentMarker, place)
-    {
-      currentMarker.addListener('click', function()
+var setCurrentMarker = function(currentMarker, place){
+    currentMarker.addListener('click', function()
       {
         if (currentMarker.getAnimation() !== null)
         {
@@ -157,18 +148,14 @@ var populateMap = function()
           infoWindow.open(map, currentMarker);
         }
       });
-      //This populates the infoWindow with the foursquare API information containted in 'menuHolder'
-      infoWindow = new google.maps.InfoWindow(
+    infoWindow = new google.maps.InfoWindow(
       {
         content: '<div>' + menuHolder + '</div>',
-      })
+      });
+};
 
-    })(marker, placeHolder);
+var stopCurrentMarker = function(currentMarker){
 
-
-    //Function to stop the marker animation if the window is closed via the "x" by the user.
-    (function(currentMarker)
-    {
       google.maps.event.addListener(infoWindow, 'closeclick', function()
       {  for (var i = 0, j=markers.length; i < j; i++)
           {
@@ -177,7 +164,26 @@ var populateMap = function()
         currentMarker.setAnimation(null);
         infoWindow.close(map, currentMarker);
       });
-    })(marker);
+    };
+
+var populateMap = function()
+{
+  for (var i = 0, j=places.length; i < j; i++)
+  {
+    var placeHolder = places[i];
+    marker = new google.maps.Marker(
+    {
+      position: places[i].position,
+      animation: google.maps.Animation.DROP,
+      map: map,
+      title: 'Get More Information'
+    });
+
+    //imediately call this function to get the current state of 'marker'(passed as a param. assigned to each new marker) so
+    //that only the marker selected will animate and not just the last marker.
+    setCurrentMarker(marker, placeHolder);
+    //set up the markers to stop when clicked
+    stopCurrentMarker(marker);
     //Put the markers on the map and push them to the 'markers' array.
     marker.setMap(map);
     markers.push(marker);
@@ -204,38 +210,34 @@ var initMap = function()
 
   //Resizes the map as the window size is adjusted.  Adapted from http://softwarewalker.com/2014/05/07/using-google-maps-in-a-responsive-design/
   var mapParentWidth = $('#mapRow').width();
-  $('#map').width(mapParentWidth * .75);
+  $('#map').width(mapParentWidth * 0.75);
   $('#map').height(3 * mapParentWidth / 4);
-}
+};
 var resizeBootstrapMap = function()
 {
 
   var mapParentWidth = $('#mapRow').width();
   if (mapParentWidth <= 768)
   {
-    $('#map').width(mapParentWidth * .75);
+    $('#map').width(mapParentWidth * 0.75);
     $('#map').height(3 * mapParentWidth / 5);
 
   }
   else if (mapParentWidth <= 455)
   {
-    $('#map').width(mapParentWidth * .75);
+    $('#map').width(mapParentWidth * 0.75);
     $('#map').height(3 * mapParentWidth / 6);
 
   }
   else
   {
-    $('#map').width(mapParentWidth * .75);
+    $('#map').width(mapParentWidth * 0.75);
     $('#map').height(3 * mapParentWidth / 4);
   }
   google.maps.event.trigger($('#map resize'));
-}
+};
 
-//Error handler for ajax loading errors
-$('document').ajaxError(function()
-{
-  alert('Triggered ajaxError handler.');
-})
+
 
 $(window).resize(resizeBootstrapMap);
 
@@ -257,12 +259,12 @@ var ViewModel = function()
   self.addOtherName = function(placesIndex)
     {
       self.placesList.push(placesIndex);
-    }
+    };
     //Clears 'placesList' of all contents
   self.removeNames = function(newName)
   {
     self.placesList([]);
-  }
+  };
 
   //Sets all the markers on the map
   self.setMapOnAll = function(map)
@@ -271,12 +273,12 @@ var ViewModel = function()
       {
         markers[i].setMap(map);
       }
-    }
+    };
     //Removes all markers from the map
   self.clearMarkers = function()
     {
       self.setMapOnAll(null);
-    }
+    };
     //Function for populating the initial list of names, 'placesList'
   self.listNamesPop = function()
   {
@@ -292,7 +294,7 @@ var ViewModel = function()
       {
         self.markersList.push(markers[i]);
       }
-    }
+    };
     //initial population of the list of names and the markers on the map
   self.listNamesPop();
   self.markersPop();
@@ -307,11 +309,11 @@ var ViewModel = function()
       markers[i].setMap(map);
     }
 
-    for (var i = 0, j=places.length; i < j; i++)
+    for (i = 0, j=places.length; i < j; i++)
     {
       self.placesList.push(places[i]);
     }
-  }
+  };
 
   //When a list item is clicked, the associated object from placesList is passed.  Each object assigned in 'places' is given a
   //markerIndex which corresponds to marker in "markerList".  This function simply indexes into the 'markers' array via
@@ -335,17 +337,18 @@ var ViewModel = function()
       markers[data.markerIndex].setAnimation(google.maps.Animation.BOUNCE);
       infoWindow.open(map, markers[data.markerIndex]);
     }
-  }
+  };
 
   //Stores the value returned when the 'Submit' button is pressed
   self.searchValue = ko.observable('');
 
   //This function updates as the user types into the search bar and filters the results accordingly.
+
   self.filterList = function(data, event)
   {
+    self.valuesArray = [];
 
-    //Contains the returned vales from 'searchIndex'
-    var valuesArray = [];
+
     //Iterate through all the places
     for (var i = 0, j= places.length; i < j; i++)
     {
@@ -353,7 +356,7 @@ var ViewModel = function()
       //If there is NOT a match, -1 is returned.
       self.searchIndex = places[i].title.toLowerCase().search(self.searchValue().toLowerCase());
       //push the value returned in 'searchIndex' to the 'valuesArray'
-      valuesArray.push(self.searchIndex);
+      self.valuesArray.push(self.searchIndex);
 
     }
 
@@ -361,27 +364,27 @@ var ViewModel = function()
     self.placesList([]);
     self.clearMarkers();
     //Iterate through all the values in 'valuesArray'
-    for (var j = 0, k= valuesArray.length; j < k; j++)
+    for (j = 0, k= self.valuesArray.length; j < k; j++)
     {
       //store the current value of j
-      var index = j;
+      this.index = j;
+
       //Imediatly call a function to use the value stored in 'index'
       (function(index)
       {
         //compare the current value in the 'valuesArray' to see if it is a matching substring (ie, not -1)
-        if (valuesArray[index].valueOf() !== -1)
+        if (self.valuesArray[index].valueOf() !== -1)
         {
           //If there is a match, place the markers and list items on the screen
           markers[index].setMap(map);
           self.addOtherName(places[index]);
         }
-      })(index);
+      })(this.index);
     }
     return true;
-  }
+  };
 
-}
+};
 
 //Apply the bindings between ViewModel and the UI
 ko.applyBindings(new ViewModel());
-
